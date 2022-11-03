@@ -1,0 +1,115 @@
+/*----- constants -----*/
+
+/*----- app's state (variables) -----*/
+Some variables we'll need are:
+
+gameOn = initialized to true
+
+board = 8x8 2d array ( board.a[1])
+
+
+let board = [
+    [n, n, n, n, n, n, n],
+    [n, n, n, n, n, n, n],
+    [n, n, n, n, n, n, n],
+    [n, n, n, n, n, n, n],
+    [n, n, n, n, n, n, n],
+    [n, n, n, n, n, n, n],
+    [n, n, n, n, n, n, n],
+    [n, n, n, n, n, n, n],
+]
+
+redsMove = boolean (false for blackMove)
+
+originSquare = square clicked on first
+destinationSquare = square clicked on second
+
+redPiece = string 'redPiece'
+blackPiece = string 'blackPiece'
+
+endSquareForRed = boolean to be able to make piece a king
+endSquareForBlack = boolean to make king
+
+redKing = string 'redKing'
+blackKing = string 'blackKing
+
+redTotalPieces = 8
+blackTotalPieces = 8
+
+winner = who won the game
+
+moveHistory as object:
+let moveHistory = {
+    red1 : 'b2 > c3'
+    ...
+}
+
+redWins = 0
+blackWins = 0
+
+
+/*----- cached element references -----*/
+- Board: We'll need to grab the board with query selector or JQuery
+- BoardEls for each square
+Move History Table:
+- Reset Buttom
+- turnDisplay
+
+/*----- event listeners -----*/
+- Clicking one of the squares on the board
+- one for the reset button
+
+
+/*----- functions -----*/
+init function will initilize the game to start, reset to its beginning state.
+
+
+
+
+playGame:
+    checkForWinner:
+        if redTotalPieces is 0 black is the winner, gameOn = false
+        else if blackTotalPieces is 0 red is the winner, gameOn = false
+        render()
+        else:
+            if redsMove:
+                makeMove()
+                red clicks on one of his pieces(originSquare) to move up 1 square and to a side (destinationSquare)
+                if originSquare has a redKing:
+                    destinationSquare can be one of the four diagonals
+                else:
+                    destinationSquare can only be the two in front of it
+
+                if destinationSquare does not equal null, check to see if square is occupied by a redPiece or blackPiece
+                    if blackPiece:
+                        board.destinationSquare = 'redPiece'
+                        board.originSquare = empty since that's where they moved from
+                        blackTotalPieces drops by one
+                    if redPiece:
+                        'Cannot move to square occupied by own piece
+                    else:
+                        destinationSquare = 'redPiece'
+                if destinationSquare is an endSquareForRed
+                            board.destinationSquare = 'kingRedPiece'
+                redMove turns to false
+                render the game after each move, applying the array data to the html
+            else redsMove is false which means it's blacks turn:
+                black clicks on on his pieces to move 1 square down and to a side
+                same logic as above but for blacks keywords
+                redMove turns to true
+                render the game after each move, applying the array data to the html
+
+
+init()
+    let board = original state
+    redMoves = true
+    moveHistory = cleared
+    winnerDisplay = cleared
+
+
+render():
+    nested for loop to render the data in the 2d array to the table in the html and styled with css
+    renders the move on the move history table
+    renders the moveDisplay
+    renders the winner if there is one
+    
