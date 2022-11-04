@@ -86,6 +86,8 @@ playGame:
                         board.destinationSquare = 'redPiece'
                         board.originSquare = empty since that's where they moved from
                         blackTotalPieces drops by one
+                        checkForWinner
+                            if winner, turn gameOn to false
                     if redPiece:
                         'Cannot move to square occupied by own piece
                     else:
@@ -125,3 +127,4 @@ Could do a 8 x 4 array for the pieces since those are the only squares that the 
 
 On the Back Burner:
 move history table
+Code computer-player strategy and toggle option to play against player or computer

@@ -25,6 +25,10 @@ html, body {
     justify-content: center;
 }
 
+.null {
+    background-color: none;
+}
+
 .dark {
     background-color: black;
 }
@@ -32,14 +36,26 @@ html, body {
 
 .blackPiece {
     background: linear-gradient(10deg, rgba(18, 18, 18, 0.76), rgba(0, 0, 0, 0.274)), url(/img/blackPiece.jpg);
-    background-size: contain;
 }
 
 .redPiece {
     background: linear-gradient(10deg, rgba(18, 18, 18, 0.76), rgba(0, 0, 0, 0.274)), url(/img/redPiece.jpg);
-
-    background-size: contain
 }
+
+.redKing {
+    background: linear-gradient(10deg, rgba(18, 18, 18, 0.76), rgba(0, 0, 0, 0.274)), url(/img/redKing.jpg);
+}
+
+.blackKing {
+    background: linear-gradient(10deg, rgba(18, 18, 18, 0.76), rgba(0, 0, 0, 0.274)), url(/img/blackKing.jpg);
+}
+
+.blackPiece, .redPiece, .redKing, .blackKing {
+    background-size: cover;
+    cursor: pointer;
+}
+
+
 
 /* Lower page */
 #lower-page {
@@ -47,4 +63,12 @@ html, body {
     grid-template-columns: 50% 50%;
     grid-template-rows: auto;
     border: 1px solid black;
+}
+
+#reset {
+    width: auto;
+    border: none;
+    border-radius: 15px;
+    height: 50px;
+    cursor: pointer;
 }
