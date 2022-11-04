@@ -1,5 +1,6 @@
-body {
+html, body {
     height: 100%;
+    width: 100%;
     text-align: center
 }
 
@@ -7,9 +8,19 @@ body {
     font-size: 70px;
 }
 
-table {
-    border: 2px solid black;
-    display:grid;
+#board {
+    align-items: center;
+}
+
+.square {
+    height: 70px;
+    width: 70px;
+    border: 1px solid black; 
+ 
+}
+
+.row {
+    display: flex;
     justify-content: center;
 }
 
@@ -24,7 +35,6 @@ th {
 }
 
 /* Lower page */
-
 #lower-page {
     display:grid;
     grid-template-columns: 50% 50%;

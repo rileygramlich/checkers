@@ -7,6 +7,8 @@ gameOn = initialized to true
 
 board = 8x8 2d array ( board.a[1])
 
+redKing = string 'redKing'
+blackKing = string 'blackKing
 
 let board = [
     [n, n, n, n, n, n, n],
@@ -30,11 +32,10 @@ blackPiece = string 'blackPiece'
 endSquareForRed = boolean to be able to make piece a king
 endSquareForBlack = boolean to make king
 
-redKing = string 'redKing'
-blackKing = string 'blackKing
 
-redTotalPieces = 8
-blackTotalPieces = 8
+
+redTotalPieces = 12
+blackTotalPieces = 12
 
 winner = who won the game
 
@@ -89,6 +90,7 @@ playGame:
                         'Cannot move to square occupied by own piece
                     else:
                         destinationSquare = 'redPiece'
+
                 if destinationSquare is an endSquareForRed
                             board.destinationSquare = 'kingRedPiece'
                 redMove turns to false
@@ -113,3 +115,13 @@ render():
     renders the moveDisplay
     renders the winner if there is one
     
+
+
+Notes to keep in mind:
+build board with javascript nested loop?
+
+Could do a 8 x 4 array for the pieces since those are the only squares that the pieces will go on.
+
+
+On the Back Burner:
+move history table
