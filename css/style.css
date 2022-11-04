@@ -15,7 +15,8 @@ html, body {
 .square {
     height: 70px;
     width: 70px;
-    border: 1px solid black; 
+    border: 1px solid black;
+    padding: 10px;
  
 }
 
@@ -28,10 +29,16 @@ html, body {
     background-color: black;
 }
 
-th {
-    height: 75px;
-    width: 75px;
-    border: 0.2px solid black;
+
+.blackPiece {
+    background: linear-gradient(10deg, rgba(18, 18, 18, 0.76), rgba(0, 0, 0, 0.274)), url(/img/blackPiece.jpg);
+    background-size: contain;
+}
+
+.redPiece {
+    background: linear-gradient(10deg, rgba(18, 18, 18, 0.76), rgba(0, 0, 0, 0.274)), url(/img/redPiece.jpg);
+
+    background-size: contain
 }
 
 /* Lower page */

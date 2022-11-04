@@ -83,11 +83,23 @@ function buildBoard() {
             }
             console.log(rowEl)
             boardEl.append(rowEl)
+    })
+}
+
+function render() {
+    // To render the board array to the boardEl we will do another nested array
+    board.forEach((row, x) => {
+        row.forEach((cell, y) => {
+            let cellEl = document.getElementById(`${x}-${y}`)
+            console.log(cellEl.classList)
+            cellEl.classList.add(`${board[x][y]}`)
         })
-    }
+    })
+}
 
 
 function init() {
     console.log('initializing')
     buildBoard()
+    render()
 }
