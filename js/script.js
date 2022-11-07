@@ -134,6 +134,9 @@ function getDestinationSquare() {
         if (xDestinationOptions.includes(xSelected) && yDestinationOptions.includes(ySelected) && board[ySelected][xSelected] === 0) { 
             move()
             checkForCapture()
+        } else if (xSelected === xOrigin && ySelected === yOrigin) {
+            console.log('unselecting')
+            clicks = 1
         } else {
             console.log('Please select a valid square to move to')
             return
@@ -146,8 +149,6 @@ function move() {
     console.log('secured destination square')
     board[yDestination][xDestination] = board[yOrigin][xOrigin]
     board[yOrigin][xOrigin] = 0
-    clicks = 1
-    turn = turn * -1
 }
 
 function blackMakeMove() {
@@ -259,6 +260,8 @@ function checkForCapture() {
                 black.totalPieces--
                 console.log(`Black total pieces: ${black.totalPieces}`)
             }
+        } else {
+            turn = turn * -1
         }
     } else if (turn === -1) {
         if (yDestination === yOrigin+2) {
@@ -281,13 +284,26 @@ function checkForCapture() {
                 red.totalPieces--
                 console.log(`red total pieces: ${red.totalPieces}`)
             }
+        } else {
+            turn = turn * -1
         }
     }
+    clicks = 1
+    // turn = turn * -1
     render()
     checkForWinner()
 }
  
-
+function checkForKing() {
+    console.log('checking to make king')
+    if (turn === 1) {
+        console.log(red.endSquares)
+        if (yDestination === 0 && red.endSquares.includes(xDestination)) {
+            console.log(board[yDestination][xDestination])
+            board[yDestination][xDestination] = red.king
+        }
+    }
+}
 
 function checkForWinner() {
     if (red.totalPieces === 0) {
