@@ -114,7 +114,7 @@ function getRedOriginSquare() {
     if (board[ySelected][xSelected] !== red.piece) { // Or a king piece
         console.log('Please select a red piece')
         return
-    } else if (red.piece === board[ySelected-1][xSelected-1] || red.piece === board[ySelected-1][xSelected+1]) {
+    } else if (red.piece === board[ySelected-1][xSelected-1] && red.piece === board[ySelected-1][xSelected+1]) {
         console.log('please select a moveable piece')
     } else {
         xOrigin = xSelected
@@ -133,6 +133,7 @@ function getDestinationSquare() {
     getDestinationOptions()
         if (xDestinationOptions.includes(xSelected) && yDestinationOptions.includes(ySelected) && board[ySelected][xSelected] === 0) { 
             move()
+            checkForCapture()
         } else {
             console.log('Please select a valid square to move to')
             return
@@ -147,8 +148,6 @@ function move() {
     board[yOrigin][xOrigin] = 0
     clicks = 1
     turn = turn * -1
-    render()
-    checkForWinner()
 }
 
 function blackMakeMove() {
@@ -165,10 +164,9 @@ function getBlackOriginSquare() {
         console.log('Please select a black piece')
         console.log(`Selected coords: ${xSelected}, ${ySelected}`)
         return
+    } else if (black.piece === board[ySelected+1][xSelected-1] && black.piece === board[ySelected+1][xSelected+1]) { 
+        console.log('please select a moveable piece')
     } 
-    // else if (black.piece == board[ySelected+1][xSelected-1]) { 
-    //     console.log('please select a moveable piece')
-    // } 
     else {
         xOrigin = xSelected
         yOrigin = ySelected
@@ -180,19 +178,116 @@ function getBlackOriginSquare() {
 
 function getDestinationOptions() {
     console.log('getting destinationOptions')
-    if (board[yOrigin][xOrigin] === red.king || board[yOrigin][xOrigin] === black.king) {
-        xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
-        yDestinationOptions = [yOrigin-2, yOrigin-1, yOrigin +1, yOrigin+2]
-    } else if (board[yOrigin][xOrigin] === red.piece) {
-        xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
-        yDestinationOptions = [yOrigin-2, yOrigin-1]
+    if (board[yOrigin][xOrigin] === red.piece) {
+        xDestinationOptions = [xOrigin-1, xOrigin+1]
+        yDestinationOptions = [yOrigin-1]
+        if (board[yOrigin-1][xOrigin-1] === black.piece) {
+            xDestinationOptions.push(xOrigin-2)
+            yDestinationOptions.push(yOrigin-2)
+        } else if (board[yOrigin-1][xOrigin+1] === black.piece) {
+            xDestinationOptions.push(xOrigin+2)
+            yDestinationOptions.push(yOrigin-2)
+        }
     } else if (board[yOrigin][xOrigin] === black.piece) {
         xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
         yDestinationOptions = [yOrigin+2, yOrigin+1]
+        if (board[yOrigin+1][xOrigin-1] === red.piece) {
+            xDestinationOptions.push(xOrigin-2)
+            yDestinationOptions.push(yOrigin+2)
+        } else if (board[yOrigin+1][xOrigin+1] === red.piece) {
+            xDestinationOptions.push(xOrigin+2)
+            yDestinationOptions.push(yOrigin+2)
+        }
+    } else if (board[yOrigin][xOrigin] === red.king) {
+        xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
+        yDestinationOptions = [yOrigin-2, yOrigin-1, yOrigin +1, yOrigin+2]
+        if (board[yOrigin-1][xOrigin-1] === black.piece) {
+            xDestinationOptions.push(xOrigin-2)
+            yDestinationOptions.push(yOrigin-2)
+        } else if (board[yOrigin-1][xOrigin+1] === black.piece) {
+            xDestinationOptions.push(xOrigin+2)
+            yDestinationOptions.push(yOrigin-2)
+        } else if (board[yOrigin+1][xOrigin-1] === black.piece) {
+            xDestinationOptions.push(xOrigin-2)
+            yDestinationOptions.push(yOrigin+2)
+        } else if (board[yOrigin+1][xOrigin+1] === black.piece) {
+            xDestinationOptions.push(xOrigin+2)
+            yDestinationOptions.push(yOrigin+2)
+        }
+    } else if (board[yOrigin][xOrigin] === black.king) {
+        xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
+        yDestinationOptions = [yOrigin-2, yOrigin-1, yOrigin +1, yOrigin+2]
+        if (board[yOrigin-1][xOrigin-1] === red.piece) {
+            xDestinationOptions.push(xOrigin-2)
+            yDestinationOptions.push(yOrigin-2)
+        } else if (board[yOrigin-1][xOrigin+1] === red.piece) {
+            xDestinationOptions.push(xOrigin+2)
+            yDestinationOptions.push(yOrigin-2)
+        } else if (board[yOrigin+1][xOrigin-1] === red.piece) {
+            xDestinationOptions.push(xOrigin-2)
+            yDestinationOptions.push(yOrigin+2)
+        } else if (board[yOrigin+1][xOrigin+1] === red.piece) {
+            xDestinationOptions.push(xOrigin+2)
+            yDestinationOptions.push(yOrigin+2)
+        }
     }
+    
     console.log(`xDestionation Options: ${xDestinationOptions}`)
     console.log(`yDestination options: ${yDestinationOptions}`)
 }
+
+function checkForCapture() {
+    console.log('checking for capture')
+    if (turn === 1) {
+        if (yDestination === yOrigin-2) {
+            if (xDestination === xOrigin-2) {
+                board[yOrigin-1][xOrigin-1] = 0
+                black.totalPieces--
+                console.log(`Black total pieces: ${black.totalPieces}`)
+            } else if (xDestination === xOrigin+2) {
+                board[yOrigin-1][xOrigin+1] = 0
+                black.totalPieces--
+                console.log(`Black total pieces: ${black.totalPieces}`)
+        }
+        } else if (yDestination === yOrigin+2) {
+            if (xDestination === xOrigin-2) {
+                board[yOrigin+1][xOrigin-1] = 0
+                black.totalPieces--
+                console.log(`Black total pieces: ${black.totalPieces}`)
+            } else if (xDestination === xOrigin+2) {
+                board[yOrigin+1][xOrigin+1] = 0
+                black.totalPieces--
+                console.log(`Black total pieces: ${black.totalPieces}`)
+            }
+        }
+    } else if (turn === -1) {
+        if (yDestination === yOrigin+2) {
+            if (xDestination === xOrigin-2) {
+                board[yOrigin+1][xOrigin-1] = 0
+                red.totalPieces--
+                console.log(`red total pieces: ${red.totalPieces}`)
+            } else if (xDestination === xOrigin+2) {
+                board[yOrigin+1][xOrigin+1] = 0
+                red.totalPieces--
+                console.log(`red total pieces: ${red.totalPieces}`)
+        }
+        } else if (yDestination === yOrigin-2) {
+            if (xDestination === xOrigin-2) {
+                board[yOrigin-1][xOrigin-1] = 0
+                red.totalPieces--
+                console.log(`red total pieces: ${red.totalPieces}`)
+            } else if (xDestination === xOrigin+2) {
+                board[yOrigin-1][xOrigin+1] = 0
+                red.totalPieces--
+                console.log(`red total pieces: ${red.totalPieces}`)
+            }
+        }
+    }
+    render()
+    checkForWinner()
+}
+ 
+
 
 function checkForWinner() {
     if (red.totalPieces === 0) {
