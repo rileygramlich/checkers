@@ -66,6 +66,7 @@ let resetEl = document.getElementById('reset')
 
 
 /*----- event listeners -----*/
+buildBoard()
 init()
 
 boardEls.addEventListener('click', function(event) {
@@ -89,6 +90,10 @@ boardEls.addEventListener('click', function(event) {
     }
 })
 
+resetEl.addEventListener('click', function(event) {
+    console.log('resetting')
+    init()
+})
 
 /*----- functions -----*/
 function redMakeMove() {
@@ -298,6 +303,8 @@ function init() {
         totalPieces : 12,
     }
     
+    turn = 1
+
     board = [
         [null, black.piece, null, black.piece, null, black.piece, null, black.piece],
         [black.piece, null, black.piece, null, black.piece, null, black.piece, null],
@@ -308,7 +315,6 @@ function init() {
         [null, red.piece, null, red.piece, null, red.piece, null, red.piece],
         [red.piece, null, red.piece, null, red.piece, null, red.piece, null]
     ]
-    buildBoard()
     render()
     // gameOn()
 }
