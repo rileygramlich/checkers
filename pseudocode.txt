@@ -104,6 +104,11 @@ playGame:
                 render the game after each move, applying the array data to the html
 
 
+redMakeMove() {
+    one event listener, conditional branching, 
+}
+
+
 init()
     let board = original state
     redMoves = true
