@@ -58,6 +58,9 @@ let winner = null
 
 let clicks = 1
 
+let xDestinationOptions = []
+let yDestinationOptions = []
+
 
 /*----- cached element references -----*/
 let boardEl = document.getElementById('board')
@@ -79,8 +82,8 @@ boardEls.addEventListener('click', function(event) {
         coords = selected.id.split('-')
         if (selected.tagName !== 'DIV') return
         console.log(`coords: ${coords}`)
-        xSelected = coords[0]
-        ySelected = coords[1]
+        xSelected = Number(coords[0])
+        ySelected = Number(coords[1])
         if (turn === 1) {
             redMakeMove()
         } else {
@@ -102,6 +105,7 @@ function redMakeMove() {
         getRedOriginSquare()
     } else if (clicks === 2) {
         getRedDestinationSquare()
+    }
 }
 
 function getRedOriginSquare() {
@@ -124,16 +128,14 @@ function getRedDestinationSquare() {
     console.log(`Origin coords: ${xOrigin}, ${yOrigin}`)
     // conditional to check if it's a king piece
     console.log(`Selected coords: ${xSelected}, ${ySelected}`)
-    // console.log(`${[xOrigin - 1, yOrigin-1]}`)
-    // 
-    if (xSelected == xOrigin - 1) { // fix this conditional to be if (coords == [xOrigin-1, yOrigin-1] || coords == [xOrigin+1, yOrigin-1])
-        move()
-    } else {
-        console.log('Please select a valid square to move to')
-        return
-    }
     // conditional to check if destination square is an end piece to make a king piece
-    }
+    getDestinationOptions()
+        if (xDestinationOptions.includes(xSelected) && yDestinationOptions.includes(ySelected)) { // fix this conditional to be if (coords == [xOrigin-1, yOrigin-1] || coords == [xOrigin+1, yOrigin-1])
+            move()
+        } else {
+            console.log('Please select a valid square to move to')
+            return
+        }
 }
 
 function move() {
@@ -189,6 +191,23 @@ function getBlackDestinationSquare() {
 }
     // conditional to check if destination square is an end piece to make a king piece
 
+function getDestinationOptions() {
+    console.log('getting destinationOptions')
+    if (board[yOrigin][xOrigin] === red.king || board[yOrigin][xOrigin] === black.king) {
+        xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
+        yDestinationOptions = [yOrigin-2, yOrigin-1, yOrigin +1, yOrigin+2]
+    } else if (turn === 1) {
+        if (board[yOrigin][xOrigin] === red.piece) {
+            xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
+            yDestinationOptions = [yOrigin-2, yOrigin-1]
+        } else {
+            xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
+            yDestinationOptions = [yOrigin+2, yOrigin+1]
+        }
+        console.log(`xDestionation Options: ${xDestinationOptions}`)
+        console.log(`yDestination options: ${yDestinationOptions}`)
+    }
+}
 
 
 // function redMakeMove(event) {
@@ -320,5 +339,4 @@ function init() {
         [red.piece, null, red.piece, null, red.piece, null, red.piece, null]
     ]
     render()
-    // gameOn()
 }
