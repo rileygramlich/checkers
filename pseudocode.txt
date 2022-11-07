@@ -104,6 +104,8 @@ playGame:
                 render the game after each move, applying the array data to the html
 
 
+takePiece()
+
 redMakeMove() {
     one event listener, conditional branching, 
 }

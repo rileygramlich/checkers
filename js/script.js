@@ -21,14 +21,14 @@ let black = {
 }
 
 let board = [
-    [null, black.piece, null, black.piece, null, black.piece, null, black.piece],
-    [black.piece, null, black.piece, null, black.piece, null, black.piece, null],
-    [null, black.piece, null, black.piece, null, black.piece, null, black.piece],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [red.piece, null, red.piece, null, red.piece, null, red.piece, null],
-    [null, red.piece, null, red.piece, null, red.piece, null, red.piece],
-    [red.piece, null, red.piece, null, red.piece, null, red.piece, null]
+    [0, black.piece, 0, black.piece, 0, black.piece, 0, black.piece],
+    [black.piece, 0, black.piece, 0, black.piece, 0, black.piece, 0],
+    [0, black.piece, 0, black.piece, 0, black.piece, 0, black.piece],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [red.piece, 0, red.piece, 0, red.piece, 0, red.piece, 0],
+    [0, red.piece, 0, red.piece, 0, red.piece, 0, red.piece],
+    [red.piece, 0, red.piece, 0, red.piece, 0, red.piece, 0]
 ]
 
 
@@ -67,6 +67,7 @@ let boardEl = document.getElementById('board')
 let boardEls = document.querySelector('#board')
 let resetEl = document.getElementById('reset')
 let moveDisplayEl = document.getElementById('move-display')
+let winnerEl = document.getElementById('winner')
 
 
 /*----- event listeners -----*/
@@ -104,7 +105,7 @@ function redMakeMove() {
     if (clicks === 1) {
         getRedOriginSquare()
     } else if (clicks === 2) {
-        getRedDestinationSquare()
+        getDestinationSquare()
     }
 }
 
@@ -124,13 +125,13 @@ function getRedOriginSquare() {
     }
 }
 
-function getRedDestinationSquare() {
+function getDestinationSquare() {
     console.log(`Origin coords: ${xOrigin}, ${yOrigin}`)
     // conditional to check if it's a king piece
     console.log(`Selected coords: ${xSelected}, ${ySelected}`)
     // conditional to check if destination square is an end piece to make a king piece
     getDestinationOptions()
-        if (xDestinationOptions.includes(xSelected) && yDestinationOptions.includes(ySelected)) { // fix this conditional to be if (coords == [xOrigin-1, yOrigin-1] || coords == [xOrigin+1, yOrigin-1])
+        if (xDestinationOptions.includes(xSelected) && yDestinationOptions.includes(ySelected) && board[ySelected][xSelected] === 0) { 
             move()
         } else {
             console.log('Please select a valid square to move to')
@@ -143,10 +144,11 @@ function move() {
     yDestination = ySelected
     console.log('secured destination square')
     board[yDestination][xDestination] = board[yOrigin][xOrigin]
-    board[yOrigin][xOrigin] = null
+    board[yOrigin][xOrigin] = 0
     clicks = 1
     turn = turn * -1
     render()
+    checkForWinner()
 }
 
 function blackMakeMove() {
@@ -154,7 +156,7 @@ function blackMakeMove() {
     if (clicks === 1) {
         getBlackOriginSquare()
     } else if (clicks === 2) {
-        getBlackDestinationSquare()
+        getDestinationSquare()
 }
 }
 
@@ -176,40 +178,33 @@ function getBlackOriginSquare() {
     }
 }
 
-function getBlackDestinationSquare() {
-    console.log(`Origin coords: ${xOrigin}, ${yOrigin}`)
-    // conditional to check if it's a king piece
-    console.log(`Selected coords: ${xSelected}, ${ySelected}`)
-    // console.log(`${[xOrigin - 1, yOrigin-1]}`)
-    // 
-    if (xSelected == xOrigin - 1) { // fix this conditional to be if (coords == [xOrigin-1, yOrigin-1] || coords == [xOrigin+1, yOrigin-1])
-        move()
-    } else {
-        console.log('Please select a valid square to move to')
-        return
-    }
-}
-    // conditional to check if destination square is an end piece to make a king piece
-
 function getDestinationOptions() {
     console.log('getting destinationOptions')
     if (board[yOrigin][xOrigin] === red.king || board[yOrigin][xOrigin] === black.king) {
         xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
         yDestinationOptions = [yOrigin-2, yOrigin-1, yOrigin +1, yOrigin+2]
-    } else if (turn === 1) {
-        if (board[yOrigin][xOrigin] === red.piece) {
-            xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
-            yDestinationOptions = [yOrigin-2, yOrigin-1]
-        } else {
-            xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
-            yDestinationOptions = [yOrigin+2, yOrigin+1]
-        }
-        console.log(`xDestionation Options: ${xDestinationOptions}`)
-        console.log(`yDestination options: ${yDestinationOptions}`)
+    } else if (board[yOrigin][xOrigin] === red.piece) {
+        xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
+        yDestinationOptions = [yOrigin-2, yOrigin-1]
+    } else if (board[yOrigin][xOrigin] === black.piece) {
+        xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
+        yDestinationOptions = [yOrigin+2, yOrigin+1]
     }
+    console.log(`xDestionation Options: ${xDestinationOptions}`)
+    console.log(`yDestination options: ${yDestinationOptions}`)
 }
 
-
+function checkForWinner() {
+    if (red.totalPieces === 0) {
+        console.log(`Black Wins`)
+        winnerEl.innerHTML = 'Black wins the game!'
+        gameOn = false
+    } else if (black.totalPieces === 0) {
+        console.log('Red Wins')
+        winnerEl.innerHTML = 'Red wins the game'
+        gameOn = false
+    }
+}
 // function redMakeMove(event) {
 //     console.log('red making move')
 //     originSquare = getOriginSquare(event)
@@ -329,14 +324,14 @@ function init() {
     turn = 1
 
     board = [
-        [null, black.piece, null, black.piece, null, black.piece, null, black.piece],
-        [black.piece, null, black.piece, null, black.piece, null, black.piece, null],
-        [null, black.piece, null, black.piece, null, black.piece, null, black.piece],
-        [null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null],
-        [red.piece, null, red.piece, null, red.piece, null, red.piece, null],
-        [null, red.piece, null, red.piece, null, red.piece, null, red.piece],
-        [red.piece, null, red.piece, null, red.piece, null, red.piece, null]
+        [0, black.piece, 0, black.piece, 0, black.piece, 0, black.piece],
+        [black.piece, 0, black.piece, 0, black.piece, 0, black.piece, 0],
+        [0, black.piece, 0, black.piece, 0, black.piece, 0, black.piece],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [red.piece, 0, red.piece, 0, red.piece, 0, red.piece, 0],
+        [0, red.piece, 0, red.piece, 0, red.piece, 0, red.piece],
+        [red.piece, 0, red.piece, 0, red.piece, 0, red.piece, 0]
     ]
     render()
 }
