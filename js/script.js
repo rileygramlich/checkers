@@ -63,6 +63,7 @@ let clicks = 1
 let boardEl = document.getElementById('board')
 let boardEls = document.querySelector('#board')
 let resetEl = document.getElementById('reset')
+let moveDisplayEl = document.getElementById('move-display')
 
 
 /*----- event listeners -----*/
@@ -188,6 +189,8 @@ function getBlackDestinationSquare() {
 }
     // conditional to check if destination square is an end piece to make a king piece
 
+
+
 // function redMakeMove(event) {
 //     console.log('red making move')
 //     originSquare = getOriginSquare(event)
@@ -286,6 +289,7 @@ function render() {
             cellEl.classList.add(`${board[y][x]}`)
         })
     })
+    turn === 1 ? moveDisplayEl.innerText = `Red's move` : moveDisplayEl.innerText = `Black's move`
 }
 
 
