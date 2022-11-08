@@ -135,3 +135,31 @@ Could do a 8 x 4 array for the pieces since those are the only squares that the 
 On the Back Burner:
 move history table
 Code computer-player strategy and toggle option to play against player or computer
+
+
+
+// 1. How come when reaching the end of the board I get a type error trying to read possible destination locations but not when allow the side of the board?
+
+// 2. I totally forgot about the rule that you have to jump the piece if there's a jumpable piece. I don't remember playing like this growing up haha, can I program a different rule?
+
+// 3. How can I write a program that checks if any piece can make a capture? and make it so that's the only movable piece?
+canItJump()
+checkIfLegitMove(position): check displacement
+Get the displacement of the selected square to the origin. 
+CheckOx - Sy ==1, Ox - Oy == math.abs()
+recursion for jumping
+DRY functions take args
+
+
+// 4. Different program for getting destination options? DRY
+
+Use displacement!!
+
+for Red:
+Oy - Sy = 1
+Ox - Sx = Math.abs(1)
+return true
+
+for black:
+Oy - Sy === -1
+Ox - Sx === Math.abs(1)

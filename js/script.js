@@ -121,9 +121,7 @@ function redMakeMove() {
 
 function getRedOriginSquare() {
     // console.log('')
-    if (red.piece === board[ySelected-1][xSelected-1] && red.piece === board[ySelected-1][xSelected+1]) {
-        console.log('please select a moveable piece')
-    } else if (board[ySelected][xSelected] === red.piece || board[ySelected][xSelected] === red.king) { // Or a king piece
+    if (board[ySelected][xSelected] === red.piece || board[ySelected][xSelected] === red.king) { // Or a king piece
         xOrigin = xSelected
         yOrigin = ySelected
         console.log('Secured origin square')
@@ -165,12 +163,19 @@ function getDestinationSquare() {
 function checkIfMoveExists() {
     console.log('checking if move exists')
     // Rise over run, to get slope. but how 
-    if (turn === 1) {
-        if (yOrigin - ySelected === 1 && xOrigin - xSelected === Math.abs(1)) {
+    // 
+    if (board[yOrigin][xOrigin] === red.king || board[yOrigin][xOrigin] === red.king) {
+        if (yOrigin - ySelected === 1 && Math.abs(xOrigin - xSelected) === 1) {
+            moveExists = true
+        } else if (yOrigin - ySelected === -1 && Math.abs(xOrigin - xSelected) === 1) {
+            moveExists = true
+        }
+    } else if (turn === 1) {
+        if (yOrigin - ySelected === 1 && Math.abs(xOrigin - xSelected) === 1) {
             moveExists = true
         }
     } else {
-        if (yOrigin - ySelected === -1 && xOrigin - xSelected === Math.abs(1)) {
+        if (yOrigin - ySelected === -1 && Math.abs(xOrigin - xSelected) === 1) {
             moveExists = true
         }
     }
