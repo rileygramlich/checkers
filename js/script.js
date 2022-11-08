@@ -8,6 +8,15 @@ console.log('connected')
 //     constructor()
 // }
 
+// 1. How come when reaching the end of the board I get a type error trying to read possible destination locations but not when allow the side of the board?
+
+// 2. I totally forgot about the rule that you have to jump the piece if there's a jumpable piece. I don't remember playing like this growing up haha, can I program a different rule?
+
+// 3. How can I write a program that checks if any piece can make a capture? and make it so that's the only movable piece?
+
+// 4. 
+
+
 let red = {
     piece : 'redPiece',
     king : 'redKing',
@@ -21,14 +30,14 @@ let black = {
 }
 
 let board = [
-    [0, black.piece, 0, black.piece, 0, black.piece, 0, black.piece],
-    [black.piece, 0, black.piece, 0, black.piece, 0, black.piece, 0],
-    [0, black.piece, 0, black.piece, 0, black.piece, 0, black.piece],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [red.piece, 0, red.piece, 0, red.piece, 0, red.piece, 0],
-    [0, red.piece, 0, red.piece, 0, red.piece, 0, red.piece],
-    [red.piece, 0, red.piece, 0, red.piece, 0, red.piece, 0]
+    [null, black.piece, null, black.piece, null, black.piece, null, black.piece],
+    [black.piece, null, black.piece, null, black.piece, null, black.piece, null],
+    [null, black.piece, null, black.piece, null, black.piece, null, black.piece],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [red.piece, null, red.piece, null, red.piece, null, red.piece, null],
+    [null, red.piece, null, red.piece, null, red.piece, null, red.piece],
+    [red.piece, null, red.piece, null, red.piece, null, red.piece, null]
 ]
 
 
@@ -52,7 +61,8 @@ let yDestination = null
 let xSelected = null
 let ySelected = null
 
-let moveHistory = {}
+let moveExists = null
+let canJump = null
 
 let winner = null
 
@@ -111,46 +121,101 @@ function redMakeMove() {
 
 function getRedOriginSquare() {
     // console.log('')
-    if (board[ySelected][xSelected] !== red.piece || board[ySelected][xSelected] !== red.king) { // Or a king piece
-        console.log('Please select a red piece')
-        return
-    } else if (red.piece === board[ySelected-1][xSelected-1] && red.piece === board[ySelected-1][xSelected+1]) {
+    if (red.piece === board[ySelected-1][xSelected-1] && red.piece === board[ySelected-1][xSelected+1]) {
         console.log('please select a moveable piece')
-    } else {
+    } else if (board[ySelected][xSelected] === red.piece || board[ySelected][xSelected] === red.king) { // Or a king piece
         xOrigin = xSelected
         yOrigin = ySelected
         console.log('Secured origin square')
         clicks = 2
         console.log(clicks)
         // render in highlight of selected square
+    } else {
+        console.log('Please select a red piece')
+        return
     }
 }
 
 function getDestinationSquare() {
+    // check if they can move there
     console.log(`Origin coords: ${xOrigin}, ${yOrigin}`)
     // conditional to check if it's a king piece
     console.log(`Selected coords: ${xSelected}, ${ySelected}`)
     // conditional to check if destination square is an end piece to make a king piece
-    getDestinationOptions()
-        if (xDestinationOptions.includes(xSelected) && yDestinationOptions.includes(ySelected) && board[ySelected][xSelected] === 0) { 
-            move()
-            checkForKing()
-            checkForCapture()
-        } else if (xSelected === xOrigin && ySelected === yOrigin) {
-            console.log('unselecting')
-            clicks = 1
-        } else {
-            console.log('Please select a valid square to move to')
-            return
-        }
+    checkIfJumpExists()
+    checkIfMoveExists()
+    if (canJump && board[ySelected][xSelected] === null) { 
+        move()
+        checkForKing()
+        checkForCapture()
+    } else if (moveExists && board[ySelected][xSelected] === null) {
+        move()
+        checkForKing()
+        checkForCapture()
+    }
+    else if (xSelected === xOrigin && ySelected === yOrigin) {
+        console.log('unselecting')
+        clicks = 1
+    } else {
+        console.log("Move doesn't exist Please select a valid square to move to")
+        return
+    }
 }
+
+function checkIfMoveExists() {
+    console.log('checking if move exists')
+    // Rise over run, to get slope. but how 
+    if (turn === 1) {
+        if (yOrigin - ySelected === 1 && xOrigin - xSelected === Math.abs(1)) {
+            moveExists = true
+        }
+    } else {
+        if (yOrigin - ySelected === -1 && xOrigin - xSelected === Math.abs(1)) {
+            moveExists = true
+        }
+    }
+}
+
+function checkIfJumpExists() {
+    console.log('checking if jump exists')
+    if (turn === 1) {
+        if (yOrigin - ySelected === 2 && xOrigin - xSelected === 2 && (board[yOrigin-1][xOrigin-1] === black.piece || board[yOrigin+1][xOrigin+1] === black.king)) {
+            canJump = true
+        } else if (yOrigin - ySelected === 2 && xOrigin - xSelected === -2 && (board[yOrigin-1][xOrigin+1] === black.piece || board[yOrigin+1][xOrigin-1] === black.king)) {
+            canJump = true
+        }
+    } else {
+        if (yOrigin - ySelected === -2 && xOrigin - xSelected === 2 && (board[yOrigin+1][xOrigin-1] === red.piece || board[yOrigin+1][xOrigin+1] === red.king)) {
+            canJump = true
+        } else if (yOrigin - ySelected === -2 && xOrigin - xSelected === -2 && (board[yOrigin+1][xOrigin+1] === red.piece || board[yOrigin+1][xOrigin-1] === red.king)) {
+            canJump = true
+        }
+    }
+}
+
+// Maybe if I wanna make jumps forced:
+// function checkPieceCanJump() {
+//     if (turn === 1) {
+//         board.forEach(function(row, y) {
+//             row.forEach(function(square, x) {
+//                 if (board[y][x] === red.piece) {
+//                     if (board[y-1][x-1] === black.piece) {
+//                         canJump = true
+//                     }
+//                 }
+//             })
+//         })
+//     }
+// }
 
 function move() {
     xDestination = xSelected
     yDestination = ySelected
     console.log('secured destination square')
     board[yDestination][xDestination] = board[yOrigin][xOrigin]
-    board[yOrigin][xOrigin] = 0
+    board[yOrigin][xOrigin] = null
+    moveExists = false
+    canJump = false
 }
 
 function blackMakeMove() {
@@ -163,7 +228,7 @@ function blackMakeMove() {
 }
 
 function getBlackOriginSquare() {
-    if (board[ySelected][xSelected] !== black.piece || board[ySelected][xSelected] !== black.king) { // Or a black king
+    if (board[ySelected][xSelected] !== black.piece) { //|| board[ySelected][xSelected] !== black.king) { // Or a black king
         console.log('Please select a black piece')
         console.log(`Selected coords: ${xSelected}, ${ySelected}`)
         return
@@ -183,57 +248,58 @@ function getDestinationOptions() {
     console.log('getting destinationOptions')
     xDestinationOptions = null
     yDestinationOptions = null
+    // check if in bounds: If y < 2 for red, if y > 6
     if (board[yOrigin][xOrigin] === red.piece) {
         xDestinationOptions = [xOrigin-1, xOrigin+1]
         yDestinationOptions = [yOrigin-1]
-        if (board[yOrigin-1][xOrigin-1] === black.piece) {
-            xDestinationOptions.push(xOrigin-2)
-            yDestinationOptions.push(yOrigin-2)
-        } else if (board[yOrigin-1][xOrigin+1] === black.piece) {
-            xDestinationOptions.push(xOrigin+2)
-            yDestinationOptions.push(yOrigin-2)
+        if (board[yOrigin-1][xOrigin-1] === black.piece && board[yOrigin-2][xOrigin-2] === null) {
+            xDestinationOptions = [xOrigin-2]
+            yDestinationOptions = [yOrigin-2]
+        } else if (board[yOrigin-1][xOrigin+1] === black.piece && board[yOrigin-2][xOrigin+2] === null) {
+            xDestinationOptions = [xOrigin+2]
+            yDestinationOptions = [yOrigin-2]
         }
     } else if (board[yOrigin][xOrigin] === black.piece) {
-        xDestinationOptions = [xOrigin-1, xOrigin+1,]
+        xDestinationOptions = [xOrigin-1, xOrigin+1]
         yDestinationOptions = [yOrigin+1]
-        if (board[yOrigin+1][xOrigin-1] === red.piece) {
-            xDestinationOptions.push(xOrigin-2)
-            yDestinationOptions.push(yOrigin+2)
-        } else if (board[yOrigin+1][xOrigin+1] === red.piece) {
-            xDestinationOptions.push(xOrigin+2)
-            yDestinationOptions.push(yOrigin+2)
+        if (board[yOrigin+1][xOrigin-1] === red.piece && board[yOrigin+2][xOrigin-2] === null) {
+            xDestinationOptions = [xOrigin-2]
+            yDestinationOptions = [yOrigin+2]
+        } else if (board[yOrigin+1][xOrigin+1] === red.piece && board[yOrigin+2][xOrigin+2] === null) {
+            xDestinationOptions = [xOrigin+2]
+            yDestinationOptions = [yOrigin+2]
         }
     } else if (board[yOrigin][xOrigin] === red.king) {
-        xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
-        yDestinationOptions = [yOrigin-2, yOrigin-1, yOrigin +1, yOrigin+2]
-        if (board[yOrigin-1][xOrigin-1] === black.piece) {
-            xDestinationOptions.push(xOrigin-2)
-            yDestinationOptions.push(yOrigin-2)
-        } else if (board[yOrigin-1][xOrigin+1] === black.piece) {
-            xDestinationOptions.push(xOrigin+2)
-            yDestinationOptions.push(yOrigin-2)
-        } else if (board[yOrigin+1][xOrigin-1] === black.piece) {
-            xDestinationOptions.push(xOrigin-2)
-            yDestinationOptions.push(yOrigin+2)
-        } else if (board[yOrigin+1][xOrigin+1] === black.piece) {
-            xDestinationOptions.push(xOrigin+2)
-            yDestinationOptions.push(yOrigin+2)
+        xDestinationOptions = [xOrigin-1, xOrigin+1]
+        yDestinationOptions = [yOrigin-1, yOrigin +1]
+        if (board[yOrigin-1][xOrigin-1] === black.piece && board[yOrigin-2][xOrigin-2] === null) {
+            xDestinationOptions = [xOrigin-2]
+            yDestinationOptions = [yOrigin-2]
+        } else if (board[yOrigin-1][xOrigin+1] === black.piece && board[yOrigin-2][xOrigin+2] === null) {
+            xDestinationOptions = [xOrigin+2]
+            yDestinationOptions = [yOrigin-2]
+        } else if (board[yOrigin+1][xOrigin-1] === black.piece && board[yOrigin+2][xOrigin-2] === null) {
+            xDestinationOptions = [xOrigin-2]
+            yDestinationOptions = [yOrigin+2]
+        } else if (board[yOrigin+1][xOrigin+1] === black.piece && board[yOrigin+2][xOrigin+2] === null) {
+            xDestinationOptions = [xOrigin+2]
+            yDestinationOptions = [yOrigin+2]
         }
     } else if (board[yOrigin][xOrigin] === black.king) {
-        xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
-        yDestinationOptions = [yOrigin-2, yOrigin-1, yOrigin +1, yOrigin+2]
-        if (board[yOrigin-1][xOrigin-1] === red.piece) {
-            xDestinationOptions.push(xOrigin-2)
-            yDestinationOptions.push(yOrigin-2)
-        } else if (board[yOrigin-1][xOrigin+1] === red.piece) {
-            xDestinationOptions.push(xOrigin+2)
-            yDestinationOptions.push(yOrigin-2)
-        } else if (board[yOrigin+1][xOrigin-1] === red.piece) {
-            xDestinationOptions.push(xOrigin-2)
-            yDestinationOptions.push(yOrigin+2)
-        } else if (board[yOrigin+1][xOrigin+1] === red.piece) {
-            xDestinationOptions.push(xOrigin+2)
-            yDestinationOptions.push(yOrigin+2)
+        xDestinationOptions = [xOrigin-1, xOrigin+1]
+        yDestinationOptions = [yOrigin-1, yOrigin +1]
+        if (board[yOrigin-1][xOrigin-1] === red.piece && board[yOrigin-2][xOrigin-2] === null) {
+            xDestinationOptions = [xOrigin-2]
+            yDestinationOptions = [yOrigin-2]
+        } else if (board[yOrigin-1][xOrigin+1] === red.piece && board[yOrigin-2][xOrigin+2] === null) {
+            xDestinationOptions = [xOrigin+2]
+            yDestinationOptions = [yOrigin-2]
+        } else if (board[yOrigin+1][xOrigin-1] === red.piece && board[yOrigin+2][xOrigin-2] === null) {
+           xDestinationOptions = [xOrigin-2]
+            yDestinationOptions = [yOrigin+2]
+        } else if (board[yOrigin+1][xOrigin+1] === red.piece && board[yOrigin+2][xOrigin+2] === null) {
+            xDestinationOptions = [xOrigin+2]
+            yDestinationOptions = [yOrigin+2]
         }
     }
     
@@ -246,21 +312,21 @@ function checkForCapture() {
     if (turn === 1) {
         if (yDestination === yOrigin-2) {
             if (xDestination === xOrigin-2) {
-                board[yOrigin-1][xOrigin-1] = 0
+                board[yOrigin-1][xOrigin-1] = null
                 black.totalPieces--
                 console.log(`Black total pieces: ${black.totalPieces}`)
             } else if (xDestination === xOrigin+2) {
-                board[yOrigin-1][xOrigin+1] = 0
+                board[yOrigin-1][xOrigin+1] = null
                 black.totalPieces--
                 console.log(`Black total pieces: ${black.totalPieces}`)
         }
         } else if (yDestination === yOrigin+2) {
             if (xDestination === xOrigin-2) {
-                board[yOrigin+1][xOrigin-1] = 0
+                board[yOrigin+1][xOrigin-1] = null
                 black.totalPieces--
                 console.log(`Black total pieces: ${black.totalPieces}`)
             } else if (xDestination === xOrigin+2) {
-                board[yOrigin+1][xOrigin+1] = 0
+                board[yOrigin+1][xOrigin+1] = null
                 black.totalPieces--
                 console.log(`Black total pieces: ${black.totalPieces}`)
             }
@@ -270,21 +336,21 @@ function checkForCapture() {
     } else if (turn === -1) {
         if (yDestination === yOrigin+2) {
             if (xDestination === xOrigin-2) {
-                board[yOrigin+1][xOrigin-1] = 0
+                board[yOrigin+1][xOrigin-1] = null
                 red.totalPieces--
                 console.log(`red total pieces: ${red.totalPieces}`)
             } else if (xDestination === xOrigin+2) {
-                board[yOrigin+1][xOrigin+1] = 0
+                board[yOrigin+1][xOrigin+1] = null
                 red.totalPieces--
                 console.log(`red total pieces: ${red.totalPieces}`)
         }
         } else if (yDestination === yOrigin-2) {
             if (xDestination === xOrigin-2) {
-                board[yOrigin-1][xOrigin-1] = 0
+                board[yOrigin-1][xOrigin-1] = null
                 red.totalPieces--
                 console.log(`red total pieces: ${red.totalPieces}`)
             } else if (xDestination === xOrigin+2) {
-                board[yOrigin-1][xOrigin+1] = 0
+                board[yOrigin-1][xOrigin+1] = null
                 red.totalPieces--
                 console.log(`red total pieces: ${red.totalPieces}`)
             }
@@ -326,6 +392,11 @@ function checkForWinner() {
         gameOn = false
     }
 }
+
+function checkMoveAgain() {
+    
+}
+
 // function redMakeMove(event) {
 //     console.log('red making move')
 //     originSquare = getOriginSquare(event)
@@ -420,7 +491,7 @@ function render() {
     board.forEach((row, y) => {
         row.forEach((cell, x) => {
             let cellEl = document.getElementById(`${x}-${y}`)
-            cellEl.classList.remove('redPiece', 'blackPiece', 'null')
+            cellEl.classList.remove('redPiece', 'blackPiece', 'null', 'blackKing', 'redKing')
             cellEl.classList.add(`${board[y][x]}`)
         })
     })
@@ -445,14 +516,14 @@ function init() {
     turn = 1
 
     board = [
-        [0, black.piece, 0, black.piece, 0, black.piece, 0, black.piece],
-        [black.piece, 0, black.piece, 0, black.piece, 0, black.piece, 0],
-        [0, black.piece, 0, black.piece, 0, black.piece, 0, black.piece],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [red.piece, 0, red.piece, 0, red.piece, 0, red.piece, 0],
-        [0, red.piece, 0, red.piece, 0, red.piece, 0, red.piece],
-        [red.piece, 0, red.piece, 0, red.piece, 0, red.piece, 0]
+        [null, black.piece, null, black.piece, null, black.piece, null, black.piece],
+        [black.piece, null, black.piece, null, black.piece, null, black.piece, null],
+        [null, black.piece, null, black.piece, null, black.piece, null, black.piece],
+        [null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null],
+        [red.piece, null, red.piece, null, red.piece, null, red.piece, null],
+        [null, red.piece, null, red.piece, null, red.piece, null, red.piece],
+        [red.piece, null, red.piece, null, red.piece, null, red.piece, null]
     ]
     render()
 }
