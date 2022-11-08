@@ -32,8 +32,8 @@ let board = [
 ]
 
 
-red.endSquares = board[0][1, 3, 5, 7]
-black.endSquares = board[7][0, 2, 4, 6]
+let redEndSquares = [1, 3, 5, 7]
+let blackEndSquares = [0, 2, 4, 6]
 
 let turn = 1
 let gameOn = true 
@@ -111,7 +111,7 @@ function redMakeMove() {
 
 function getRedOriginSquare() {
     // console.log('')
-    if (board[ySelected][xSelected] !== red.piece) { // Or a king piece
+    if (board[ySelected][xSelected] !== red.piece || board[ySelected][xSelected] !== red.king) { // Or a king piece
         console.log('Please select a red piece')
         return
     } else if (red.piece === board[ySelected-1][xSelected-1] && red.piece === board[ySelected-1][xSelected+1]) {
@@ -122,6 +122,7 @@ function getRedOriginSquare() {
         console.log('Secured origin square')
         clicks = 2
         console.log(clicks)
+        // render in highlight of selected square
     }
 }
 
@@ -133,6 +134,7 @@ function getDestinationSquare() {
     getDestinationOptions()
         if (xDestinationOptions.includes(xSelected) && yDestinationOptions.includes(ySelected) && board[ySelected][xSelected] === 0) { 
             move()
+            checkForKing()
             checkForCapture()
         } else if (xSelected === xOrigin && ySelected === yOrigin) {
             console.log('unselecting')
@@ -161,7 +163,7 @@ function blackMakeMove() {
 }
 
 function getBlackOriginSquare() {
-    if (board[ySelected][xSelected] !== black.piece) { // Or a black king
+    if (board[ySelected][xSelected] !== black.piece || board[ySelected][xSelected] !== black.king) { // Or a black king
         console.log('Please select a black piece')
         console.log(`Selected coords: ${xSelected}, ${ySelected}`)
         return
@@ -179,6 +181,8 @@ function getBlackOriginSquare() {
 
 function getDestinationOptions() {
     console.log('getting destinationOptions')
+    xDestinationOptions = null
+    yDestinationOptions = null
     if (board[yOrigin][xOrigin] === red.piece) {
         xDestinationOptions = [xOrigin-1, xOrigin+1]
         yDestinationOptions = [yOrigin-1]
@@ -190,8 +194,8 @@ function getDestinationOptions() {
             yDestinationOptions.push(yOrigin-2)
         }
     } else if (board[yOrigin][xOrigin] === black.piece) {
-        xDestinationOptions = [xOrigin-2, xOrigin-1, xOrigin+1, xOrigin+2]
-        yDestinationOptions = [yOrigin+2, yOrigin+1]
+        xDestinationOptions = [xOrigin-1, xOrigin+1,]
+        yDestinationOptions = [yOrigin+1]
         if (board[yOrigin+1][xOrigin-1] === red.piece) {
             xDestinationOptions.push(xOrigin-2)
             yDestinationOptions.push(yOrigin+2)
@@ -297,10 +301,16 @@ function checkForCapture() {
 function checkForKing() {
     console.log('checking to make king')
     if (turn === 1) {
-        console.log(red.endSquares)
-        if (yDestination === 0 && red.endSquares.includes(xDestination)) {
+        console.log(redEndSquares)
+        if (yDestination === 0 && redEndSquares.includes(xDestination)) {
             console.log(board[yDestination][xDestination])
             board[yDestination][xDestination] = red.king
+        }
+    } else {
+        console.log(blackEndSquares)
+        if (yDestination === 7 && blackEndSquares.includes(xDestination)) {
+            console.log(board[yDestination][xDestination])
+            board[yDestination][xDestination] = black.king
         }
     }
 }
