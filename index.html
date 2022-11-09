@@ -5,22 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500&display=swap" rel="stylesheet">
     <script defer src="/js/script.js"></script>
     <title>Checkers</title>
 </head>
 <body>
-    <h1 id="title">Checkers!</h1>
-    <div id="board"></div>
-    <h2 class="header" id="winner">Winner result will display here</h2>
-    <button id="reset">Reset</button>
-    <div class="container" id="lower-page">
-        <h2 class="header" id="move-display">Red's Move</h2>
-        <div id="move-history">
-            <h2 class="child" id="move-title">Move History</h2>
-            <p> .... </p>
-            <div class="child" id="">
+    <h1 id="title">CHECKERS</h1>
+    <div class="container">
+        <div id="info-display">
+            <h2 class="header" id="winner">Winner result will display here</h2>
+            <h2 class="header" id="move-display"></h2>
+            <button id="reset">Reset</button>
+            <div class="taken">
+                <h3 id="reds"></h3>
+                <h3 id="blacks"></h3>
             </div>
         </div>
+        <div id="board"></div>
     </div>
 </body>
 </html>
