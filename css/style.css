@@ -3,14 +3,51 @@ html, body {
     width: 100%;
     text-align: center;
     font-family: 'Exo 2', sans-serif;
+    background-color: rgb(57, 22, 22);
+    color: red;
+    text-shadow: -4px 0 black, 0 4px black, 4px 0 black, 0 -4px black;
 }
 
 #title {
-    font-size: 70px;
+    font-size: 80px;
 }
 
+/* Left side info display and rest button */
+.container {
+    display:grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: auto;
+    border: 1px solid black;
+}
+
+#info-display {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+.taken {
+    display: flex;
+}
+
+#reset {
+    width: auto;
+    border: none;
+    border-radius: 15px;
+    height: 50px;
+    cursor: pointer;
+    background-color: black;
+    color:rgb(232, 0, 0);
+    font-family: 'Exo 2', 'Sans-serif';
+    font-size: 35px;
+    margin-top: 550px;
+    width: auto;
+}
+
+/* Right side: board */
 #board {
     align-items: center;
+    padding-right: 100px;
 }
 
 .square {
@@ -30,10 +67,13 @@ html, body {
     background-color: none;
 }
 
+.light {
+    background-color: burlywood;
+}
+
 .dark {
     background-color: black;
 }
-
 
 .blackPiece {
     background: black url(/img/blackPiece.png);
@@ -57,24 +97,6 @@ html, body {
 }
 
 .selected {
-    border-radius:50%;
-    border:#CCCCCC thin solid;
+    background-color: rgb(246, 255, 0);
 }
 
-
-
-/* Lower page */
-#lower-page {
-    display:grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: auto;
-    border: 1px solid black;
-}
-
-#reset {
-    width: auto;
-    border: none;
-    border-radius: 15px;
-    height: 50px;
-    cursor: pointer;
-}
