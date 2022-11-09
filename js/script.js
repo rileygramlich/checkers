@@ -32,10 +32,10 @@ let black = {
 let board = [
     [null, black.piece, null, black.piece, null, black.piece, null, black.piece],
     [black.piece, null, black.piece, null, black.piece, null, black.piece, null],
-    [null, black.piece, null, black.piece, null, black.piece, null, black.piece],
+    [null, black.piece, null, black.king, null, black.piece, null, black.piece],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
-    [red.piece, null, red.piece, null, red.piece, null, red.piece, null],
+    [red.piece, null, red.king, null, red.piece, null, red.piece, null],
     [null, red.piece, null, red.piece, null, red.piece, null, red.piece],
     [red.piece, null, red.piece, null, red.piece, null, red.piece, null]
 ]
@@ -121,7 +121,7 @@ function redMakeMove() {
 
 function getRedOriginSquare() {
     // console.log('')
-    if (board[ySelected][xSelected] === red.piece || board[ySelected][xSelected] === red.king) { // Or a king piece
+    if (board[ySelected][xSelected] === red.piece || board[ySelected][xSelected] === red.king) {
         xOrigin = xSelected
         yOrigin = ySelected
         console.log('Secured origin square')
@@ -164,7 +164,7 @@ function checkIfMoveExists() {
     console.log('checking if move exists')
     // Rise over run, to get slope. but how 
     // 
-    if (board[yOrigin][xOrigin] === red.king || board[yOrigin][xOrigin] === red.king) {
+    if (board[yOrigin][xOrigin] === red.king || board[yOrigin][xOrigin] === black.king) {
         if (yOrigin - ySelected === 1 && Math.abs(xOrigin - xSelected) === 1) {
             moveExists = true
         } else if (yOrigin - ySelected === -1 && Math.abs(xOrigin - xSelected) === 1) {
@@ -184,16 +184,28 @@ function checkIfMoveExists() {
 function checkIfJumpExists() {
     console.log('checking if jump exists')
     if (turn === 1) {
-        if (yOrigin - ySelected === 2 && xOrigin - xSelected === 2 && (board[yOrigin-1][xOrigin-1] === black.piece || board[yOrigin+1][xOrigin+1] === black.king)) {
+        if (yOrigin - ySelected === 2 && xOrigin - xSelected === 2 && (board[yOrigin-1][xOrigin-1] === black.piece || board[yOrigin-1][xOrigin-1] === black.king)) {
             canJump = true
-        } else if (yOrigin - ySelected === 2 && xOrigin - xSelected === -2 && (board[yOrigin-1][xOrigin+1] === black.piece || board[yOrigin+1][xOrigin-1] === black.king)) {
+        } else if (yOrigin - ySelected === 2 && xOrigin - xSelected === -2 && (board[yOrigin-1][xOrigin+1] === black.piece || board[yOrigin-1][xOrigin+1] === black.king)) {
             canJump = true
+        } else if (board[yOrigin][xOrigin] === red.king) {
+            if (yOrigin - ySelected === -2 && xOrigin - xSelected === 2 && (board[yOrigin+1][xOrigin-1] === black.piece || board[yOrigin+1][xOrigin-1] === black.king)) {
+                canJump = true
+            } else if (yOrigin - ySelected === -2 && xOrigin - xSelected === -2 && (board[yOrigin+1][xOrigin+1] === black.piece || board[yOrigin+1][xOrigin+1] === black.king)) {
+                canJump = true
+            }
         }
     } else {
-        if (yOrigin - ySelected === -2 && xOrigin - xSelected === 2 && (board[yOrigin+1][xOrigin-1] === red.piece || board[yOrigin+1][xOrigin+1] === red.king)) {
+        if (yOrigin - ySelected === -2 && xOrigin - xSelected === 2 && (board[yOrigin+1][xOrigin-1] === red.piece || board[yOrigin+1][xOrigin-1] === red.king)) {
             canJump = true
-        } else if (yOrigin - ySelected === -2 && xOrigin - xSelected === -2 && (board[yOrigin+1][xOrigin+1] === red.piece || board[yOrigin+1][xOrigin-1] === red.king)) {
+        } else if (yOrigin - ySelected === -2 && xOrigin - xSelected === -2 && (board[yOrigin+1][xOrigin+1] === red.piece || board[yOrigin+1][xOrigin+1] === red.king)) {
             canJump = true
+        } else if (board[yOrigin][yOrigin] === black.king) {
+            if (yOrigin - ySelected === 2 && xOrigin - xSelected === 2 && (board[yOrigin-1][xOrigin-1] === red.piece || board[yOrigin-1][xOrigin-1] === red.king)) {
+                canJump = true
+            } else if (yOrigin - ySelected === 2 && xOrigin - xSelected === -2 && (board[yOrigin-1][xOrigin+1] === red.piece || board[yOrigin-1][xOrigin+1] === red.king)) {
+                canJump = true
+            }
         }
     }
 }
@@ -233,19 +245,16 @@ function blackMakeMove() {
 }
 
 function getBlackOriginSquare() {
-    if (board[ySelected][xSelected] !== black.piece) { //|| board[ySelected][xSelected] !== black.king) { // Or a black king
-        console.log('Please select a black piece')
-        console.log(`Selected coords: ${xSelected}, ${ySelected}`)
-        return
-    } else if (black.piece === board[ySelected+1][xSelected-1] && black.piece === board[ySelected+1][xSelected+1]) { 
-        console.log('please select a moveable piece')
-    } 
-    else {
+    if (board[ySelected][xSelected] === black.piece || board[ySelected][xSelected] === black.king) {
         xOrigin = xSelected
         yOrigin = ySelected
         console.log('Secured origin square')
         clicks = 2
         console.log(clicks)
+        // render in highlight of selected square
+    } else {
+        console.log('Please select a black piece')
+        return
     }
 }
 
@@ -523,10 +532,10 @@ function init() {
     board = [
         [null, black.piece, null, black.piece, null, black.piece, null, black.piece],
         [black.piece, null, black.piece, null, black.piece, null, black.piece, null],
-        [null, black.piece, null, black.piece, null, black.piece, null, black.piece],
+        [null, black.piece, null, black.king, null, black.piece, null, black.piece],
         [null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null],
-        [red.piece, null, red.piece, null, red.piece, null, red.piece, null],
+        [red.piece, null, red.king, null, red.piece, null, red.piece, null],
         [null, red.piece, null, red.piece, null, red.piece, null, red.piece],
         [red.piece, null, red.piece, null, red.piece, null, red.piece, null]
     ]
