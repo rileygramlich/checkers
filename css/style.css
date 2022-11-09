@@ -1,7 +1,8 @@
 html, body {
     height: 100%;
     width: 100%;
-    text-align: center
+    text-align: center;
+    font-family: 'Exo 2', sans-serif;
 }
 
 #title {
@@ -35,24 +36,29 @@ html, body {
 
 
 .blackPiece {
-    background: linear-gradient(10deg, rgba(18, 18, 18, 0.76), rgba(0, 0, 0, 0.274)), url(/img/blackPiece.jpg);
+    background: black url(/img/blackPiece.png);
 }
 
 .redPiece {
-    background: linear-gradient(10deg, rgba(18, 18, 18, 0.76), rgba(0, 0, 0, 0.274)), url(/img/redPiece.jpg);
+    background: black url(/img/redPiece.png);
 }
 
 .redKing {
-    background: linear-gradient(10deg, rgba(18, 18, 18, 0.76), rgba(0, 0, 0, 0.274)), url(/img/redKing.jpg);
+    background: black url(/img/redKing.png);
 }
 
 .blackKing {
-    background: linear-gradient(10deg, rgba(18, 18, 18, 0.76), rgba(0, 0, 0, 0.274)), url(/img/blackKing.jpg);
+    background: black url(/img/blackKing.png);
 }
 
 .blackPiece, .redPiece, .redKing, .blackKing {
     background-size: cover;
     cursor: pointer;
+}
+
+.selected {
+    border-radius:50%;
+    border:#CCCCCC thin solid;
 }
 
 
