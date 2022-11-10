@@ -5,7 +5,12 @@
 ## Description and Background Info:
 Checkers, a simple 2 player board game, is one of the oldest games in human existence, going back to an estimated 5000 years ago.  Plato, the famous Greek philosopher, makes mention of the game as having an Egyptian origin.  The game is played on an 8 x 8 'checkered' board of light and dark squares; it is the same board used for another popular game of ancient origins - chess.
 
-## Screenshots: 
+## Screenshots:
+![Screenshot of initialized game](./img/Screenshot1.png)
+![Screenshot of game in progress](./img/Screenshot2.png)
+![Screenshot of game won by red](./img/Screenshot3.png)
+![Screenshot of rending on tablet dimentions](./img/Screenshot4.png)
+
 
 ## Technologies Used:
 This browser-based game of Checkers was built entirely with the languages JavaScript, HTML, and CSS.
@@ -29,7 +34,7 @@ Google Chrome and its developer tools was used to test and render the game durin
 ## Getting Started: 
 
 ### Demo:
-[Click to play game](https://rileygramlich.github.io/checkers/)
+[Click to play game!](https://rileygramlich.github.io/checkers/)
 
 ### Instructions:
 The object of the game is to clear all of your opponent's pieces from the board.
@@ -49,7 +54,7 @@ Rules:
 * Moderate trash talking acceptable
 
 ## Next Steps: Planned future enhancements:
-* Add animations for when making the move
+* Add animations for when making a move
 * Add sound effects for capturing a piece, winning the game, or obtaining a king
 * Add in move history table
 * Add computer player logic for single player option

@@ -217,7 +217,6 @@ function getBlackOriginSquare() {
 function getOriginSquare() {
     xOrigin = xSelected
     yOrigin = ySelected
-    console.log('Secured origin square')
     clicks = 2
     console.log(clicks)
     selected.classList.add('selected')
@@ -302,7 +301,6 @@ function checkIfMoveExists() {
 function move() {
     xDestination = xSelected
     yDestination = ySelected
-    console.log('secured destination square')
     board[yDestination][xDestination] = board[yOrigin][xOrigin]
     board[yOrigin][xOrigin] = null
     moveExists = false
