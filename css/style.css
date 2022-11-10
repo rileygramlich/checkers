@@ -116,14 +116,21 @@ html, body {
         justify-content: center;
         align-items: center;
     }
+
     .square {
         height: 30px;
         width: 30px;
         border: 1px solid black;
         padding: 10px;
     }
+
     #board {
         padding-right: 0;
+    }
+
+    .captures {
+        grid-template-columns: 150px 150px;
+        padding-bottom: 5%;
     }
 
     #reset {
@@ -136,5 +143,50 @@ html, body {
 
     .header {
         font-size: smaller;
+    }
+}
+
+@media only screen and (max-width: 468px) {
+    body {
+        letter-spacing: 1px;
+    }
+
+    #title {
+        font-size: 50px;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .square {
+        height: 18px;
+        width: 18px;
+        border: 1px solid black;
+        padding: 10px;
+    }
+
+    #board {
+        padding-right: 0;
+    }
+
+    .captures {
+        grid-template-columns: 150px 150px;
+        padding-bottom: 5%;
+    }
+
+    #reset {
+        margin: auto
+    }
+
+    #move-display {
+        margin: auto;
+    }
+
+    .header {
+        font-size: 14px;
     }
 }
