@@ -55,8 +55,8 @@ let boardEls = document.querySelector('#board')
 let resetEl = document.getElementById('reset')
 let moveDisplayEl = document.getElementById('move-display')
 let winnerEl = document.getElementById('winner')
-let redsEl = document.getElementById('#reds')
-let blacksEl = document.getElementById('#blacks')
+let redCapturesEl = document.getElementById('r-captures')
+let blackCapturesEl = document.getElementById('b-captures')
 
 
 /*----- event listeners -----*/
@@ -168,8 +168,11 @@ function render() {
         })
     })
     turn === 1 ? moveDisplayEl.innerText = `Red's move` : moveDisplayEl.innerText = `Black's move`
-    // redsEl.innerText = `${13 - black.totalPieces}`
-    // blacksEl.innerText = `${13 - red.totalPieces}`
+    rCaptures = String(12 - black.totalPieces)
+    bCaptures = String(12 - red.totalPieces)
+    console.log(redCapturesEl)
+    redCapturesEl.innerText = `${12 - black.totalPieces}`
+    blackCapturesEl.innerText = `${12 - red.totalPieces}`
 }
 
 // Runs necessary functions to make move for Red:
