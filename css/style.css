@@ -81,19 +81,19 @@ html, body {
 }
 
 .blackPiece {
-    background: black url(/img/blackPiece.png);
+    background: black url(./img/blackPiece.png);
 }
 
 .redPiece {
-    background: black url(/img/redPiece.png);
+    background: black url(./img/redPiece.png);
 }
 
 .redKing {
-    background: black url(/img/redKing.png);
+    background: black url(./img/redKing.png);
 }
 
 .blackKing {
-    background: black url(/img/blackKing.png);
+    background: black url(./img/blackKing.png);
 }
 
 .blackPiece, .redPiece, .redKing, .blackKing {
