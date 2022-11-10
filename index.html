@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
     <script defer src="/js/script.js"></script>
     <title>Checkers</title>
 </head>
@@ -15,13 +15,15 @@
     <h1 id="title">CHECKERS</h1>
     <div class="container">
         <div id="info-display">
-            <h2 class="header" id="winner">Winner result will display here</h2>
+            <h2 class="header" id="winner"></h2>
             <h2 class="header" id="move-display"></h2>
-            <button id="reset">Reset</button>
-            <div class="taken">
-                <h3 id="reds"></h3>
-                <h3 id="blacks"></h3>
+            <div class="captures">
+                <h3 class="header" id="reds-captures">Red's Captures</h3>
+                <h3 class="header" id="blacks-captures">Black's Captures</h3>
+                <h3 class="header" id="r-captures"></h3>
+                <h3 class="header" id="b-captures"></h3>
             </div>
+            <button id="reset">Reset</button>
         </div>
         <div id="board"></div>
     </div>
