@@ -16,9 +16,9 @@ HTML was used to build the essential layout of the webpage. The title, the move 
 
 CSS was used to style the webpage. All the color and also location of the elements in the webpage are manipulated using CSS. It's also used to render the correct pieces to the board and to style the selectd piece according to what classes are atributed to that HTML element by the JavaScript functions.
 
-This game was programmed wholely on Virtual Studio Code Editor [https://code.visualstudio.com/]
+This game was programmed wholely on [Virtual Studio Code Editor](https://code.visualstudio.com/)
 
-Google images was used to find one original photo that included all four possible pieces and then they were cropped with basic Windows photo editor. Then since they still had a white background, [https://www.remove.bg/] was used to remove the white and convert to png images.
+Google images was used to find one original photo that included all four possible pieces and then they were cropped with basic Windows photo editor. Then since they still had a white background, [remove.bg](https://www.remove.bg/) was used to remove the white and convert to png images.
 
 Google Fonts was used to find the fonts.
 
@@ -29,7 +29,7 @@ Google Chrome and its developer tools was used to test and render the game durin
 ## Getting Started: 
 
 ### Demo:
-[Click to play game](linkhere)
+[Click to play game](https://rileygramlich.github.io/checkers/)
 
 ### Instructions:
 The object of the game is to clear all of your opponent's pieces from the board.
